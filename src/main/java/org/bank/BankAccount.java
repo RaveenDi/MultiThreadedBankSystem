@@ -71,6 +71,7 @@ public class BankAccount {
 
             try {
                 // Wait until balance is sufficient or timeout occurs
+                if (remainingTime < 0) remainingTime = 0;
                 wait(remainingTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
