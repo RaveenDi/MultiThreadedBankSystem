@@ -2,42 +2,47 @@ package org.bank;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class Bank {
     private Map<String, BankAccount> accounts;
+    private Random random;
 
-    /** Constructor for Bank class */
+    /** Constructor to initialize the bank */
     public Bank() {
-        this.accounts = new HashMap<>();
+        accounts = new HashMap<>();
+        random = new Random();
     }
 
-    /** Method to add an account to the bank */
+    /** Method to add a new account to the bank */
     public synchronized void addAccount(BankAccount account) {
         accounts.put(account.getAccountNumber(), account);
     }
 
-    /** Method to deposit money into a specific account */
-    public synchronized void deposit(BankAccount account, double amount) {
-        account.deposit(amount);
+    /** Method to get an account by account number */
+    public synchronized BankAccount getAccount(String accountNumber) {
+        return accounts.get(accountNumber);
     }
 
-    /** Method to withdraw money from a specific account */
-    public synchronized void withdraw(BankAccount account, double amount) {
-        if (account.getBalance() >= amount) {
-            account.deposit(-amount); // Negative amount indicates withdrawal
-            System.out.println("Withdrawal of " + amount + " made from account " + account.getAccountNumber() + ". New balance: " + account.getBalance());
+    /** Method to handle monthly loan installment for a random account */
+    public void handleLoanInstallment(double installmentAmount) {
+        // Randomly select two accounts
+        String[] accountNumbers = accounts.keySet().toArray(new String[0]);
+        String accountNumber1 = accountNumbers[random.nextInt(accountNumbers.length)];
+        String accountNumber2;
+        do {
+            accountNumber2 = accountNumbers[random.nextInt(accountNumbers.length)];
+        } while (accountNumber2.equals(accountNumber1)); // Ensure two distinct accounts
+
+        // Deduct the installment from the selected accounts
+        BankAccount account1 = accounts.get(accountNumber1);
+        BankAccount account2 = accounts.get(accountNumber2);
+
+        if (account1 != null && account2 != null) {
+            account1.handleLoanInstallment(installmentAmount);
+            account2.handleLoanInstallment(installmentAmount);
         } else {
-            System.out.println("Insufficient balance for withdrawal from account " + account.getAccountNumber() + ".");
+            System.out.println("[Bank] Error: One or both accounts not found.");
         }
-    }
-
-    /** Method to check the balance of a specific account */
-    public synchronized double checkBalance(BankAccount account) {
-        return account.getBalance();
-    }
-
-    /** Method to request a loan installment for a specific account */
-    public synchronized void requestLoanInstallment(BankAccount account, double monthlyInstallmentAmount) {
-        account.requestLoanInstallment(monthlyInstallmentAmount);
     }
 }
