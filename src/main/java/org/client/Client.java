@@ -8,11 +8,19 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Client extends Thread {
     private Bank bank;
     private BankAccount account;
+    private String clientId;
+    private String clientType; // Example: VIP, Regular
+    private String clientAddress;
+    private String clientPhone;
 
-    /** Constructor to initialize client with bank and account */
-    public Client(Bank bank, BankAccount account) {
+    /** Constructor to initialize client with bank, account, and additional attributes */
+    public Client(Bank bank, BankAccount account, String clientId, String clientType, String clientAddress, String clientPhone) {
         this.bank = bank;
         this.account = account;
+        this.clientId = clientId;
+        this.clientType = clientType;
+        this.clientAddress = clientAddress;
+        this.clientPhone = clientPhone;
     }
 
     /** Run method to perform client transactions */

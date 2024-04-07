@@ -15,7 +15,7 @@ public class BankSystemTest {
         bank = new Bank();
         // Create and add test accounts to the bank
         for (int i = 1; i <= 3; i++) {
-            BankAccount account = new BankAccount("Acc-" + i, "Holder " + i, 1000);
+            BankAccount account = new BankAccount("Acc-" + i, "Holder " + i, 1000, "Savings", "Main Branch");
             bank.addAccount(account);
         }
     }
@@ -50,7 +50,7 @@ public class BankSystemTest {
     @Test
     public void testZeroDeposit() {
         Bank bank = new Bank();
-        BankAccount account = new BankAccount("1", "Test Holder", 100);
+        BankAccount account = new BankAccount("1", "Test Holder", 100, "Savings", "Main Branch");
         bank.addAccount(account);
         account.deposit(0);
         assertEquals(100, account.checkBalance());
@@ -59,7 +59,7 @@ public class BankSystemTest {
     @Test
     public void testLargeDeposit() {
         Bank bank = new Bank();
-        BankAccount account = new BankAccount("2", "Test Holder", 100);
+        BankAccount account = new BankAccount("2", "Test Holder", 100, "Savings", "Main Branch");
         bank.addAccount(account);
         account.deposit(1000000);
         assertEquals(1000100, account.checkBalance());
@@ -68,7 +68,7 @@ public class BankSystemTest {
     @Test
     public void testNegativeDeposit() {
         Bank bank = new Bank();
-        BankAccount account = new BankAccount("3", "Test Holder", 100);
+        BankAccount account = new BankAccount("3", "Test Holder", 100, "Savings", "Main Branch");
         bank.addAccount(account);
         account.deposit(-50);
         assertEquals(100, account.checkBalance());
@@ -77,7 +77,7 @@ public class BankSystemTest {
     @Test
     public void testWithdrawalWithInsufficientBalance() {
         Bank bank = new Bank();
-        BankAccount account = new BankAccount("4", "Test Holder", 100);
+        BankAccount account = new BankAccount("4", "Test Holder", 100, "Savings", "Main Branch");
         bank.addAccount(account);
         account.withdraw(200);
         assertEquals(100, account.checkBalance());
@@ -86,9 +86,9 @@ public class BankSystemTest {
     @Test
     public void testNonexistentAccountOperations() {
         Bank bank = new Bank();
-        BankAccount account = new BankAccount("6", "Test Holder", 100);
+        BankAccount account = new BankAccount("6", "Test Holder", 100, "Savings", "Main Branch");
         bank.addAccount(account);
-        BankAccount nonExistentAccount = new BankAccount("7", "Nonexistent Holder", 0);
+        BankAccount nonExistentAccount = new BankAccount("7", "Nonexistent Holder", 0, "Savings", "Main Branch");
         account.deposit(50);
         nonExistentAccount.withdraw(50);
         assertEquals(150, account.checkBalance());

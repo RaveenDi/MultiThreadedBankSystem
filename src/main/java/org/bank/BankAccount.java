@@ -4,12 +4,16 @@ public class BankAccount {
     private String accountNumber;
     private String accountHolderName;
     private double balance;
+    private String accountType;
+    private String branch;
 
-    /** Constructor to initialize the bank account */
-    public BankAccount(String accountNumber, String accountHolderName, double initialBalance) {
+    /** Constructor to initialize the bank account with additional attributes */
+    public BankAccount(String accountNumber, String accountHolderName, double initialBalance, String accountType, String branch) {
         this.accountNumber = accountNumber;
         this.accountHolderName = accountHolderName;
         this.balance = initialBalance;
+        this.accountType = accountType;
+        this.branch = branch;
     }
 
     /** Method to get the account number */

@@ -4,9 +4,6 @@ import org.bank.Bank;
 import org.bank.BankAccount;
 import org.client.Client;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 public class Main {
     public static void main(String[] args) {
         Bank bank = new Bank();
@@ -17,23 +14,29 @@ public class Main {
 
         // Create accounts and add them to the bank
         for (int i = 1; i <= 10; i++) {
-            BankAccount account = new BankAccount(Integer.toString(i), "Holder " + i, 100);
+            BankAccount account = new BankAccount(Integer.toString(i), "Holder " + i, 100, "Savings", "Main Branch");
             bank.addAccount(account);
         }
 
         // Create and start client threads
         for (int i = 1; i <= 10; i++) {
             BankAccount account = bank.getAccount(Integer.toString(i));
+            String clientId = "ID" + i;
+            String clientType = isVIPClient(i) ? "VIP" : "Regular";
+            String clientAddress = "Address" + i;
+            String clientPhone = "+123456789" + i;
+
             Thread clientThread;
             if (isVIPClient(i)) {
-                clientThread = new Thread(vipThreadGroup, new Client(bank, account), "VIP_Client_" + i);
+                clientThread = new Thread(vipThreadGroup, new Client(bank, account, clientId, clientType, clientAddress, clientPhone), "VIP_Client_" + i);
                 clientThread.setPriority(Thread.MAX_PRIORITY); // Set priority to maximum for VIP clients
             } else {
-                clientThread = new Thread(regularThreadGroup, new Client(bank, account), "Regular_Client_" + i);
+                clientThread = new Thread(regularThreadGroup, new Client(bank, account, clientId, clientType, clientAddress, clientPhone), "Regular_Client_" + i);
                 clientThread.setPriority(Thread.MIN_PRIORITY); // Set priority to minimum for regular clients
             }
             clientThread.start();
         }
+
 
         // Simulate handling of loan installment by the bank
         Thread loanHandlerThread = new Thread(() -> {
